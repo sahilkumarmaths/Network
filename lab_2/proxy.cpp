@@ -1,5 +1,7 @@
 /*
- *Proxy Server
+ *Author: 		Sahil Kumar
+ *Date:   		27/2/2013
+ *Projcet: 		Proxy Server
  */
 #include<iostream>
 #include<stdio.h>
@@ -35,18 +37,18 @@ struct buf_msg{
 int main(int argc, char *argv[])
 {
 	printf("\n");
-	proxy_port = check_port(argc,argv);		//Getting the listening port
+	proxy_port = check_port(argc,argv);						//Getting the listening port
 	printf("\n");
-	int proxy_fd;																								//Proxy socket file descriptor
-	int client_fd;																							//Client's socket file descriptor
-	struct sockaddr_in proxy_addr;					//proxy address info
-	struct sockaddr_in client_addr	;			//Client address info
+	int proxy_fd;																	//Proxy socket file descriptor
+	int client_fd;																//Client's socket file descriptor
+	struct sockaddr_in proxy_addr;								//proxy address info
+	struct sockaddr_in client_addr	;							//Client address info
 	int sin_size = sizeof(struct sockaddr_in);
 	
-	proxy_fd= socket(PF_INET, SOCK_STREAM,0); 	// Creating active socket
+	proxy_fd= socket(PF_INET, SOCK_STREAM,0); 		// Creating active socket
 	if(proxy_fd<0)
 	{
-		 close(proxy_fd);
+		  close(proxy_fd);
 			perror("Proxy-Socket: Could not create socket.\n");
 			exit(1);
 	}
@@ -54,14 +56,14 @@ int main(int argc, char *argv[])
 	
 	//Filling struct sockaddr_in for proxy
 	proxy_addr.sin_family = AF_INET;									//Host Byte Order
-	proxy_addr.sin_port = htons(proxy_port);	//Short Network Byte Order
-	proxy_addr.sin_addr.s_addr= INADDR_ANY;		//Auto fll my IP
-	memset(&(proxy_addr.sin_zero),'\0',8);			//Zero the rest of struct
+	proxy_addr.sin_port = htons(proxy_port);					//Short Network Byte Order
+	proxy_addr.sin_addr.s_addr= INADDR_ANY;						//Auto fll my IP
+	memset(&(proxy_addr.sin_zero),'\0',8);						//Zero the rest of struct
 
 	//Binding to local address
 	if( bind(proxy_fd,(struct sockaddr *)&proxy_addr, sizeof(struct sockaddr))<0)
 	{
-		 close(proxy_fd);
+			 close(proxy_fd);
 			perror("Proxy-Bind: Could not bind to local address.\n");
 			exit(1);
 	}
@@ -70,7 +72,7 @@ int main(int argc, char *argv[])
 	//Listening incoming connections
 	if(listen(proxy_fd, BACKLOG)<0) 
 	{
-		 close(proxy_fd);
+		  close(proxy_fd);
 			perror("Proxy-Listen: Could not listen.\n");
 			exit(1);	
 	}
@@ -82,8 +84,8 @@ int main(int argc, char *argv[])
 		client_fd = accept(proxy_fd,(struct sockaddr *)&client_addr,(unsigned int *)&sin_size);
 		if( client_fd<0)
 		{
-			 close(client_fd);
-			 close(proxy_fd);
+			  close(client_fd);
+			  close(proxy_fd);
 				perror("Proxy-Accept: Could not accept connection.\n");
 				exit(1);	
 		}
@@ -93,51 +95,57 @@ int main(int argc, char *argv[])
 		buf_msg *dta = new struct buf_msg;
 		getdata(dta, proxy_fd,client_fd);
    	cout<<"Host: " << dta->host<<"\n";
-	   cout<<"Url: " <<dta->url <<"\n";
+	  cout<<"Url: " <<dta->url <<"\n";
     cout<<"Port: "<<dta->port <<"\n";
-		  cout<<"Message: \n" << dta->message ;
+		cout<<"Message: \n" << dta->message ;
 		/***********Code to Send the data to the Remote Host *********/
 		
-		int http_fd;																															//HTTP socket on sock_fd
+		int http_fd;																							//HTTP socket on sock_fd
 		int http_data_recieved = 0;																//Data_recieved from Http
-		struct sockaddr_in http_addr;												//HTTP Address info
-		struct hostent *h;																								//HTTP hostnet
+		struct sockaddr_in http_addr;															//HTTP Address info
+		struct hostent *h;																				//HTTP hostnet
 		char http_reply[100000];
 		
-		http_fd = socket(PF_INET, SOCK_STREAM,0); 	//Active Open
+		http_fd = socket(PF_INET, SOCK_STREAM,0); 								//Active Open
 		if(http_fd<0)
 		{
+		    close(client_fd);
+				close(http_fd);
+				close(proxy_fd);
 				perror("Server-Socket: Could not create socket.\n");
 				exit(1);
 		}
 	
 		//Filling struct sockaddr_in for remote server
 		
-		h = gethostbyname((dta->host).c_str());																																													//Getting hostname
+		h = gethostbyname((dta->host).c_str());																							//Getting hostname
 		http_addr.sin_addr.s_addr = inet_addr(inet_ntoa(*((struct in_addr *)h->h_addr) ));	//Setting address
 		http_addr.sin_family = AF_INET;																																																					//Host Byte Order
-		http_addr.sin_port = htons( atoi((dta->port).c_str()));																													//Short Network Byte Order
-		memset(&(http_addr.sin_zero),'\0',8);																																															//Zero the rest of struct
+		http_addr.sin_port = htons( atoi((dta->port).c_str()));															//Short Network Byte Order
+		memset(&(http_addr.sin_zero),'\0',8);																								//Zero the rest of struct
 		
 		//Connect to remote server
 		if( connect(http_fd,(struct sockaddr *)&http_addr,sizeof(struct sockaddr) )<0)
 		{
+					close(client_fd);
+					close(http_fd);
+					close(proxy_fd);
 					perror("Server-Connect: Could not connect to remote server.\n");
 					exit(1);
 		}
 		printf("Connected To: %s IP address: %s\n",h->h_name, inet_ntoa(*((struct in_addr *)h->h_addr)));
-		//message = "GET / HTTP/1.0\r\n\r\n";
-		//message = "GET / HTTP/1.0\r\nHost: www.iitg.ernet.in\r\n\r\n";
-	
 		if(send(http_fd, (dta->message).c_str(),(dta->message).length(),0) < 0)
 		{
+				close(client_fd);
+				close(http_fd);
+				close(proxy_fd);
 				printf("Server-Send Data: Sending of data failed.");
 				exit(1);
 		}
 		printf("Data sent to remote server.\n");
 		
 		int byterecieved = 0;																	// Bytes recieved at single time
-		string prev="", next="",tot = "";					// Variables for computation
+		string prev="", next="",tot = "";											// Variables for computation
 		http_data_recieved = 0;
 		
 		while(1)
@@ -149,6 +157,9 @@ int main(int argc, char *argv[])
 						break;
 				}else if(byterecieved == -1)
 				{
+						close(client_fd);
+						close(http_fd);
+						close(proxy_fd);
 						printf("Server-Recieve Data: Recieving of data failed.");
 						exit(1);
 				}
@@ -158,6 +169,9 @@ int main(int argc, char *argv[])
 				
 				if( send(client_fd, http_reply,byterecieved, 0) <0)
 				{
+						close(client_fd);
+						close(http_fd);
+						close(proxy_fd);
 						printf("Proxy-Send Data to Client: Sending data to client failed.\n");
 						exit(1);
 				}
@@ -241,14 +255,14 @@ void check_data(struct buf_msg *dta,char *buffer, int len,int proxy_fd, int clie
 					break;
 				pos = s.find("\r\n",prev+2);
 				str2 = s.substr(prev+2,pos-(prev+2));
-				check_2(str2,proxy_fd, client_fd);					// Checking subsequent lines of string
+				check_2(str2,proxy_fd, client_fd);				// Checking subsequent lines of string
 				sarray[sarrayc] = str2; 
 				sarrayc++;
 		}
 		final(dta,sarray,sarrayc,proxy_fd, client_fd);
 }
 /*
- * Final 
+ * This function sends the final data in the struct buf_msg
  */
 void final(struct buf_msg *dta,string s[25], int len,int proxy_fd, int client_fd)
 {
@@ -258,7 +272,7 @@ void final(struct buf_msg *dta,string s[25], int len,int proxy_fd, int client_fd
 		string port="";
 		string url = "";
 		int valid = 0;																			// For checking validitiy
-		int cas = 0;																					// Two cases in single line or many lines
+		int cas = 0;																				// Two cases in single line or many lines
 		if(s[0].find(" /")!=-1)
 		{
 			port="80";
@@ -351,8 +365,8 @@ void final(struct buf_msg *dta,string s[25], int len,int proxy_fd, int client_fd
 		}
 		else
 		{
-			 close(client_fd);
-			 close(proxy_fd);
+				close(client_fd);
+				close(proxy_fd);
 				printf("Not Implemented (501) \n");
 				exit(1);	
 		}
@@ -367,12 +381,12 @@ void final(struct buf_msg *dta,string s[25], int len,int proxy_fd, int client_fd
  */
 void check_1(string s,int proxy_fd,int  client_fd){
 	 
-	 if( (s.find(" /")>0  || s.find(" http://")>0 )&& s.find(" HTTP/1.0")>0 && count(s.begin(),s.end(),' ') == 2)
+	 if( (s.find(" /")!=-1  || s.find(" http://")!=-1 )&& s.find(" HTTP/1.0")!=-1 && count(s.begin(),s.end(),' ') == 2)
 	 {
 		}else
 		{
-			 close(client_fd);
-			 close(proxy_fd);
+			  close(client_fd);
+			  close(proxy_fd);
 				printf("4. Bad Request (400) \n");
 				exit(1);
 		}
@@ -393,16 +407,16 @@ void check_2(string s,int proxy_fd, int client_fd){
 		}
 		if(pos_col1>=1 && s[pos_col1-1] ==' ' )																		// header :
 		{
-			 close(client_fd);
-			 close(proxy_fd);
+			  close(client_fd);
+		 	  close(proxy_fd);
 				printf("6. Bad Request (400) \n");
 				exit(1);
 		}
 		
 		if(pos_col1 <len-1 && pos_col1>=0 && s[pos_col1+1]!= ' ')									// No space after 1st : 
 		{
-			 close(client_fd);
-			 close(proxy_fd);
+			  close(client_fd);
+			  close(proxy_fd);
 				printf("7. Bad Request (400) \n");
 				exit(1);
 		}
@@ -411,19 +425,17 @@ void check_2(string s,int proxy_fd, int client_fd){
 		{
 				if(s.find("Host: ")<0 || pos_col2 == len-1 )
 				{
-					 close(client_fd);
-			   close(proxy_fd);
+				  	close(client_fd);
+			      close(proxy_fd);
 						printf("8. Bad Request (400) \n");
 						exit(1);
 				}
 				if( (pos_col2<len-1 &&  s[pos_col2 +1] ==' ' ) ||  ( pos_col2>=1 && s[pos_col2-1] ==' '))
 				{
-					 close(client_fd);
+					  close(client_fd);
 						close(proxy_fd);
 						printf("9. Bad Request (400) \n");
 						exit(1);
 				}
 		}
-}	
-	
-
+}

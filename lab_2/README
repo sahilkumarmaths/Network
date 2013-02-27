@@ -1,0 +1,111 @@
+====================================================================
+
+    README file for Assignment 2 - HTTP Proxy
+
+           Name		: Sahil Kumar	
+ 					 Roll No: 10010175
+ 
+====================================================================
+Introduction:
+	 This is  basic web proxy capable of accepting HTTP requests, 
+forwarding requests to remote (origin) servers, and returning 
+response data to a client. When the proxy starts, it establishes 
+a socket connection that it can use to listen for incoming 
+connections. Once a client has connected, the proxy parses the 
+read data from the client and then check for a properly-formatted
+HTTP request. Once the proxy has parsed the URL, it makes the 
+connection to the requested host and port and sends the HTTP 
+request for the appropriate resource. After that the response from
+the remote server is received and then the proxy sends the response
+message back to the client via the appropriate socket.
+====================================================================
+Compilation:
+
+-> Extract the 10010175 folder
+-> Run "make" in terminal.
+-> Proxy.cpp will be compiled.
+====================================================================
+Run instructions:
+
+-> In terminal type "./proxy port". port here refers to the port on
+	 which the proxy server will listen.
+-> Open second Terminal.
+-> Type "telnet localhost port". port here is the same port as above.
+-> Now you can test the following examples.
+====================================================================
+Example 1:
+
+GET /index.html HTTP/1.0
+Host: intranet.iitg.ernet.in
+====================================================================
+Example 2:
+
+GET /index.html HTTP/1.0
+Host: intranet.iitg.ernet.in:80
+====================================================================
+Example 3:
+
+GET / HTTP/1.0
+Host: intranet.iitg.ernet.in
+====================================================================
+Example 4:
+
+GET /~jatinga/ HTTP/1.0
+Host: jatinga.iitg.ernet.in
+====================================================================
+Example 5:
+
+PUT /index.html HTTP/1.0
+Host: intranet.iitg.ernet.in
+====================================================================
+Example 6:
+
+GET http://jatinga.iitg.ernet.in/~jatinga/ HTTP/1.0
+====================================================================
+Example 7:
+
+GET http://intranet.iitg.ernet.in/index.html HTTP/1.0
+====================================================================
+Example 8:
+
+GET http://intranet.iitg.ernet.in:80/index.html HTTP/1.0
+====================================================================
+Example 9:
+
+GET http://www.iitg.ernet.in:80/index.html HTTP/1.0
+====================================================================
+Example 10:
+
+PUT http://intranet.iitg.ernet.in:80/index.html HTTP/1.0
+====================================================================
+Assumptions:
+->If the request is bad or not implemented, then the proxy exits after
+	displaying the concerned message.
+->The format of the request should be proper, then only the suitable 
+	result will be shown
+	
+	Format 1:
+	GET<space>http://<host>[:<port>][/<path>/]<space>HTTP/1.0
+	[Header1: Value]
+	[Header2: Value]
+	.
+	.
+	[Headern: Value]
+	
+	Format 2:
+	GET<space>/[<path>]<space>HTTP/1.0
+	Host: value
+	[Header1: Value]
+	[Header2: Value]
+	.
+	.
+	[Headern: Value]
+	
+	<space> 				= simple space ' '
+	<host>  				= Example - www.google.com
+	[]		 			 		= These are optional parameters
+	:<port> 		 		= Example- :80
+	/<path>/ 				= Example- /index.html 
+														 /folder/
+	[Header: Value] = Example- Host: www.google.com
+													
