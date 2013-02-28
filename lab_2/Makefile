@@ -12,4 +12,4 @@ clean:
 	rm -f proxy   *.o
 	
 tar:
-	tar -cvzf 10010175.tar.gz proxy.cpp README Makefile
+	tar -cvzf abc.tar.gz proxy.cpp README Makefile
