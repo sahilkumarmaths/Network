@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-	Assignment 4 	: Using Network Simulator (NS-3)	
-	Author 				: Sahil Kumar
-	Date					: 16/4/2013
+	Assignment 4		: Using Network Simulator (NS-3)	
+	Author		: Sahil Kumar
+	Date			: 16/4/2013
 ----------------------------------------------------------------
 Compilation
 ----------------------------------------------------------------
@@ -49,12 +49,12 @@ Part 1B:
 	applicationwas made to run on distinct ports. The ports 
 	used are 11 , 12. 
 	
-	Latency 		Throughput(FLOW 1) 		Throughput(FLOW 2) 
-	1ms					0.00802443 Mbps				0.00802274 Mbps
-	2ms					0.00702138 Mbps				0.0070199 Mbps
-	3ms					0.00601832 Mbps				0.00601706 Mbps
-	4ms					0.00501527 Mbps				0.00501421 Mbps
-	5ms					0.00401222 Mbps				0.00401137 Mbps
+	Latency Throughput(FLOW 1) 		Throughput(FLOW 2) 
+	1ms			0.00802443 Mbps				0.00802274 Mbps
+	2ms			0.00702138 Mbps				0.0070199 Mbps
+	3ms			0.00601832 Mbps				0.00601706 Mbps
+	4ms			0.00501527 Mbps				0.00501421 Mbps
+	5ms			0.00401222 Mbps				0.00401137 Mbps
 	
 ----------------------------------------------------------------
 Part 2:
