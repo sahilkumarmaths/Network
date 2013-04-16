@@ -1,0 +1,63 @@
+----------------------------------------------------------------
+	Assignment 4 	: Using Network Simulator (NS-3)	
+	Author 				: Sahil Kumar
+	Date					: 16/4/2013
+----------------------------------------------------------------
+Compilation
+----------------------------------------------------------------
+	Put the corresponding .cc file in 'scratch' folder
+	And then Execute './waf' in terminal without quotes.
+----------------------------------------------------------------
+Running
+----------------------------------------------------------------
+
+Part 1A:
+		./waf --run "scratch/ques_1_a 1.0" 
+		./waf --run "scratch/ques_1_a 2.0" 
+		./waf --run "scratch/ques_1_a 3.0" 
+		./waf --run "scratch/ques_1_a 4.0" 
+		./waf --run "scratch/ques_1_a 5.0" 
+Part 1B: 
+		./waf --run "scratch/ques_1_b 1.0" 
+		./waf --run "scratch/ques_1_b 2.0" 
+		./waf --run "scratch/ques_1_b 3.0" 
+		./waf --run "scratch/ques_1_b 4.0" 
+		./waf --run "scratch/ques_1_b 5.0" 
+
+Part 2:
+		 ./waf --run "scratch/ques_2"
+
+Part 3:
+		 ./waf --run "scratch/ques_3_a_b" 
+
+Part 4:
+		 ./waf --run "scratch/ques_4 10ms"
+----------------------------------------------------------------
+Results 
+----------------------------------------------------------------
+Part 1A:
+	The server is listening on port number 11.
+	Latency 		Throughput
+	1 ms				0.00802443 Mbps
+	2 ms		    0.00702138 Mbps
+	3 ms				0.00601832 Mbps
+	4 ms				0.00501527 Mbps
+	5 ms				0.00401222 Mbps
+
+Part 1B:
+	For ensuring no conflict each instance of client-server 
+	applicationwas made to run on distinct ports. The ports 
+	used are 11 , 12. 
+	
+	Latency 		Throughput(FLOW 1) 		Throughput(FLOW 2) 
+	1ms					0.00802443 Mbps				0.00802274 Mbps
+	2ms					0.00702138 Mbps				0.0070199 Mbps
+	3ms					0.00601832 Mbps				0.00601706 Mbps
+	4ms					0.00501527 Mbps				0.00501421 Mbps
+	5ms					0.00401222 Mbps				0.00401137 Mbps
+	
+----------------------------------------------------------------
+Part 2:
+	The plot of the packet loss ratio and time is added in the plot 
+	folder. The Pcap Traces are also attached with it.
+
