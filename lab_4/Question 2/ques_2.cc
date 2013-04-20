@@ -1,9 +1,3 @@
-/*
- * Author 			: Sahil Kumar
- * Date 				: 16/4/2013
- * Assignment 	: 4
- */
-
 #include <iostream>
 #include<fstream>
 #include "ns3/core-module.h"

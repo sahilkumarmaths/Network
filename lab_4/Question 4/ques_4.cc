@@ -1,9 +1,3 @@
-/*
- * Author 			: Sahil Kumar
- * Date 				: 16/4/2013
- * Assignment 	: 4
- */
-
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/internet-module.h"

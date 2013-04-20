@@ -13,13 +13,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
-/*
- * Author 			: Sahil Kumar
- * Date 				: 16/4/2013
- * Assignment 	: 4
- */
- 
 #include <fstream>
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
